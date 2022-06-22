@@ -130,7 +130,7 @@ router.put('/:id', (req, res) => {
 
 router.delete('/:id', (req, res) => {
   // delete a Product by its `id` value
-  User.destroy({
+  Product.destroy({
     where: {
         id: req.params.id
     }
