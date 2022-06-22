@@ -7,11 +7,10 @@ router.get('/', (req, res) => {
   // find all categories
   // be sure to include its associated Products
   Category.findAll({
-    include:[
+    include:
       {
-        model: Product
+        model: Product,
       }
-    ]
   })
   .then(dbCategoryData => res.json(dbCategoryData))
   .catch(err => {
@@ -27,15 +26,14 @@ router.get('/:id', (req, res) => {
     where: {
         id: req.params.id
     },
-    include: [
+    include: 
       {
         model: Product
       }
-    ]
   })
   .then(dbCategoryData => {
     if (!dbCategoryData) {
-        res.status(404).json({message: 'No user found with this id'});
+        res.status(404).json({message: 'No Categoryfound with this id'});
         return;
     }
     res.json(dbCategoryData);
@@ -65,7 +63,7 @@ router.put('/:id', (req, res) => {
         id: req.params.id
     }
   })
-  .then(dbUserData => {
+  .then(dbCategoryData => {
     if (!dbCategoryData[0]) {
         res.status(404).json({ message: 'No user found with this id'});
         return;
