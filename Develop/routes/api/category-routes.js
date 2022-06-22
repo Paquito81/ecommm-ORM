@@ -26,14 +26,19 @@ router.get('/:id', (req, res) => {
   Category.findOne({
     where: {
         id: req.params.id
-    }
+    },
+    include: [
+      {
+        model: Product
+      }
+    ]
   })
-  .then(dbUserData => {
-    if (!dbUserData) {
+  .then(dbCategoryData => {
+    if (!dbCategoryData) {
         res.status(404).json({message: 'No user found with this id'});
         return;
     }
-    res.json(dbUserData);
+    res.json(dbCategoryData);
   })
   .catch(err => {
     console.log(err);
@@ -44,30 +49,28 @@ router.get('/:id', (req, res) => {
 router.post('/', (req, res) => {
   // create a new category
   Category.create ({
-    username: req.body.username, 
-    email: req.body.email,
-    password: req.body.password
-  })
-  .then(dbUserData => res.json(dbUserData))
+    category_name: req.body.category_name
+  })  
+  .then(dbCategoryData => res.json(dbCategoryData))
   .catch(err => {
     console.log(err);
     res.status(500).json(err);
   });
 });
 
-Category.put('/:id', (req, res) => {
+router.put('/:id', (req, res) => {
   // update a category by its `id` value
-  User.update(req.body, {
+  Category.update(req.body, {
     where: {
         id: req.params.id
     }
   })
   .then(dbUserData => {
-    if (!dbUserData[0]) {
+    if (!dbCategoryData[0]) {
         res.status(404).json({ message: 'No user found with this id'});
         return;
     }
-    res.json(dbUserData);
+    res.json(dbCategoryData);
   })
   .catch(err => {
     console.log(err);
@@ -77,18 +80,18 @@ Category.put('/:id', (req, res) => {
 
 router.delete('/:id', (req, res) => {
   // delete a category by its `id` value
-  User.destroy({
+  Category.destroy({
     where: {
         id: req.params.id
     }
   })
-  .then(dbUserData => {
-    if (!dbUserData) {
+  .then(dbCategoryData => {
+    if (!dbCategoryData) {
         res.status(404).json({message: 'No user found with id'});
         return;
 
     }
-    res.json(dbUserData);
+    res.json(dbCategoryData);
   })
   .catch(err => {
     console.log(err);
