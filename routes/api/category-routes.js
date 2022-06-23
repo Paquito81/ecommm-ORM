@@ -7,9 +7,11 @@ router.get('/', (req, res) => {
   // find all categories
   // be sure to include its associated Products
   Category.findAll({
+    attributes: ["id", "category_name"],
     include:[
       {
         model: Product,
+        attributes: ["id", "product_name", "price", "stock", "category_id"]
       }
     ]  
   })
@@ -29,7 +31,14 @@ router.get('/:id', (req, res) => {
     },
     include: [
       {
-        model: Product
+        model: Product,
+        attributes: [
+          "id",
+          "product_name", 
+          "price", 
+          "stock", 
+          "category_id"
+        ]
       }
     ]  
   })
@@ -60,13 +69,21 @@ router.post('/', (req, res) => {
 
 router.put('/:id', (req, res) => {
   // update a category by its `id` value
-  Category.update(req.body, {
-    where: {
-        id: req.params.id
-    }
+  Category.update(
+    {
+      category_name: req.body.category_name
+    },
+    {
+      where: {
+        id: req.params.id,      
+    },
+    // req.body, {
+    // where: {
+    //     id: req.params.id
+    // }
   })
   .then(dbCategoryData => {
-    if (!dbCategoryData[0]) {
+    if (!dbCategoryData) {
         res.status(404).json({ message: 'No user found with this id'});
         return;
     }
@@ -83,7 +100,7 @@ router.delete('/:id', (req, res) => {
   Category.destroy({
     where: {
         id: req.params.id
-    }
+    },
   })
   .then(dbCategoryData => {
     if (!dbCategoryData) {
