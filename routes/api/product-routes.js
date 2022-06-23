@@ -34,10 +34,10 @@ router.get('/:id', (req, res) => {
     },
     include: [
       {
-        model: Category,
+        model: Category
       },
       {
-        model: Tag,
+        model: Tag
       }
     ]
   })
